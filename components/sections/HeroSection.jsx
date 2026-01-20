@@ -25,7 +25,7 @@ export default function HeroSection() {
             <h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight">
               Upgrade Your Tech <br />
               with{" "}
-              <span className="bg-gradient-to-r from-white to-blue-900 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-white to-blue-700 bg-clip-text text-transparent">
                 Tech-Gear
               </span>
             </h1>

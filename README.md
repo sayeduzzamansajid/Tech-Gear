@@ -286,8 +286,7 @@ Built as a production-ready demo project for assessment.
 
 ## 🔗 Links
 
-- **Live Site:** [Add your Vercel deployment URL]
-- **GitHub Repository:** [Add your GitHub repo URL]
+- **Live Site:** [[https://tech-gear-next.vercel.app/](https://tech-gear-next.vercel.app/)]
 
 ---
 
