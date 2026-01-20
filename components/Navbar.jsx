@@ -57,33 +57,35 @@ export default function Navbar() {
 
 
                     </div>
-                    <div><div>
-                        {authenticated && (
-                            <ActiveLink
-                                href="/add-item"
-                                className={` text-white${pathname === '/add-item' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
-                                    } transition-colors`}
-                            >
-                                Add Item
-                            </ActiveLink>
-                        )}
-                        {authenticated ? (
-                            <button
-                                onClick={handleLogout}
-                                className="text-white hover:text-blue-600 transition-colors"
-                            >
-                                Logout
-                            </button>
-                        ) : (
-                            <ActiveLink
-                                href="/login"
-                                className={`text-white${pathname === '/login' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
-                                    } transition-colors`}
-                            >
-                                Login
-                            </ActiveLink>
-                        )}
-                    </div></div>
+                    <div className='flex gap-4'
+                    ><div>
+                            {authenticated && (
+                                <ActiveLink
+                                    href="/add-item"
+                                    className={` text-white${pathname === '/add-item' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
+                                        } transition-colors`}
+                                >
+                                    Add Item
+                                </ActiveLink>
+                            )}
+                            {authenticated ? (
+                                <button
+                                    onClick={handleLogout}
+                                    className="text-white hover:text-blue-600 transition-colors"
+                                >
+                                    Logout
+                                </button>
+                            ) : (
+                                <Link
+                                    href="/login"
+                                    className={`text-white${pathname === '/login' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
+                                        } transition-colors`}
+                                >
+                                    Login
+                                </Link>
+                            )}
+                        </div>
+                    </div>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden">

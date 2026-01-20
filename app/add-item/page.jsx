@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { isAuthenticated } from '@/lib/auth-client';
 import { createProduct } from '@/lib/api';
 
@@ -14,7 +12,7 @@ export default function AddItemPage() {
     price: '',
     image: '',
   });
-  const [specs, setSpecs] = useState({});
+  const [specs, setSpecs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -27,11 +25,8 @@ export default function AddItemPage() {
 
   const checkAuth = async () => {
     const auth = await isAuthenticated();
-    if (!auth) {
-      router.push('/login');
-    } else {
-      setAuthChecked(true);
-    }
+    if (!auth) router.push('/login');
+    else setAuthChecked(true);
   };
 
   const handleInputChange = (e) => {
@@ -39,22 +34,16 @@ export default function AddItemPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSpecChange = (key, value) => {
-    setSpecs((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const addSpecField = () => {
-    const key = `spec-${Object.keys(specs).length}`;
-    setSpecs((prev) => ({ ...prev, [key]: '' }));
-  };
-
-  const removeSpecField = (key) => {
+  const handleSpecChange = (index, key, value) => {
     setSpecs((prev) => {
-      const newSpecs = { ...prev };
-      delete newSpecs[key];
-      return newSpecs;
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [key]: value };
+      return updated;
     });
   };
+
+  const addSpecField = () => setSpecs((prev) => [...prev, { name: '', value: '' }]);
+  const removeSpecField = (index) => setSpecs((prev) => prev.filter((_, i) => i !== index));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,27 +52,18 @@ export default function AddItemPage() {
     setSuccess(false);
 
     try {
-      // Filter out empty spec values
-      const filteredSpecs = Object.fromEntries(
-        Object.entries(specs).filter(([_, value]) => value.trim() !== '')
-      );
-
+      const filteredSpecs = specs.filter((s) => s.name.trim() && s.value.trim());
       await createProduct({
-        name: formData.name,
-        description: formData.description,
+        ...formData,
         price: parseFloat(formData.price),
-        image: formData.image,
         specs: filteredSpecs,
       });
 
       setSuccess(true);
       setFormData({ name: '', description: '', price: '', image: '' });
-      setSpecs({});
-
-      setTimeout(() => {
-        router.push('/items');
-      }, 2000);
-    } catch (err) {
+      setSpecs([]);
+      setTimeout(() => router.push('/items'), 2000);
+    } catch {
       setError('Failed to create product. Please try again.');
     } finally {
       setLoading(false);
@@ -92,38 +72,36 @@ export default function AddItemPage() {
 
   if (!authChecked) {
     return (
-      <main className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="flex items-center justify-center min-h-screen">
-          <p className="text-gray-600">Loading...</p>
-        </div>
-        <Footer />
+      <main className="min-h-screen flex items-center justify-center bg-gradient-to-r from-black to-blue-900">
+        <p className="text-white/70">Loading...</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <Navbar />
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold mb-6 text-gray-900">Add New Product</h1>
+    <main className="min-h-screen bg-gradient-to-r from-black to-blue-900 py-12">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 md:p-12">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 text-center">
+            Add New Product
+          </h1>
 
           {success && (
-            <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
-              Product created successfully! Redirecting to products page...
+            <div className="mb-6 bg-green-700/20 border border-green-400 text-green-200 px-4 py-3 rounded-lg text-center">
+              Product created successfully! Redirecting...
             </div>
           )}
 
           {error && (
-            <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+            <div className="mb-6 bg-red-700/20 border border-red-400 text-red-200 px-4 py-3 rounded-lg text-center">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Product Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-white/90 mb-2">
                 Product Name *
               </label>
               <input
@@ -132,14 +110,15 @@ export default function AddItemPage() {
                 type="text"
                 value={formData.name}
                 onChange={handleInputChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="e.g., iPhone 15 Pro Max"
+                required
+                className="w-full px-4 py-3 border border-white/30 rounded-lg bg-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
               />
             </div>
 
+            {/* Description */}
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="description" className="block text-sm font-medium text-white/90 mb-2">
                 Description *
               </label>
               <textarea
@@ -147,89 +126,85 @@ export default function AddItemPage() {
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                required
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
                 placeholder="Enter product description..."
+                className="w-full px-4 py-3 border border-white/30 rounded-lg bg-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
               />
             </div>
 
-            <div>
-              <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
-                Price ($) *
-              </label>
-              <input
-                id="price"
-                name="price"
-                type="number"
-                step="0.01"
-                min="0"
-                value={formData.price}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="e.g., 999.99"
-              />
+            {/* Price & Image */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="price" className="block text-sm font-medium text-white/90 mb-2">
+                  Price ($) *
+                </label>
+                <input
+                  id="price"
+                  name="price"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  placeholder="e.g., 999.99"
+                  required
+                  className="w-full px-4 py-3 border border-white/30 rounded-lg bg-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="image" className="block text-sm font-medium text-white/90 mb-2">
+                  Image URL *
+                </label>
+                <input
+                  id="image"
+                  name="image"
+                  type="url"
+                  value={formData.image}
+                  onChange={handleInputChange}
+                  placeholder="https://example.com/image.jpg"
+                  required
+                  className="w-full px-4 py-3 border border-white/30 rounded-lg bg-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+                />
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-2">
-                Image URL *
-              </label>
-              <input
-                id="image"
-                name="image"
-                type="url"
-                value={formData.image}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="https://example.com/image.jpg"
-              />
-            </div>
-
+            {/* Specifications */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-white/90">
                   Specifications (Optional)
                 </label>
                 <button
                   type="button"
                   onClick={addSpecField}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-sm text-blue-400 hover:text-blue-500 font-medium"
                 >
                   + Add Spec
                 </button>
               </div>
-              {Object.entries(specs).map(([key, value]) => (
-                <div key={key} className="flex gap-2 mb-2">
+
+              {specs.map((spec, index) => (
+                <div key={index} className="flex gap-2 mb-2">
                   <input
                     type="text"
-                    placeholder="Spec name (e.g., Display)"
-                    value={key.startsWith('spec-') ? '' : key}
-                    onChange={(e) => {
-                      const newKey = e.target.value;
-                      const oldValue = specs[key];
-                      setSpecs((prev) => {
-                        const newSpecs = { ...prev };
-                        delete newSpecs[key];
-                        newSpecs[newKey || key] = oldValue;
-                        return newSpecs;
-                      });
-                    }}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Spec name"
+                    value={spec.name}
+                    onChange={(e) => handleSpecChange(index, 'name', e.target.value)}
+                    className="flex-1 px-4 py-2 border border-white/30 rounded-lg bg-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
                   />
                   <input
                     type="text"
                     placeholder="Spec value"
-                    value={value}
-                    onChange={(e) => handleSpecChange(key, e.target.value)}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={spec.value}
+                    onChange={(e) => handleSpecChange(index, 'value', e.target.value)}
+                    className="flex-1 px-4 py-2 border border-white/30 rounded-lg bg-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
                   />
                   <button
                     type="button"
-                    onClick={() => removeSpecField(key)}
-                    className="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
+                    onClick={() => removeSpecField(index)}
+                    className="px-4 py-2 bg-red-700/20 text-red-200 rounded-lg hover:bg-red-600/30 transition-colors"
                   >
                     Remove
                   </button>
@@ -237,18 +212,19 @@ export default function AddItemPage() {
               ))}
             </div>
 
-            <div className="flex gap-4">
+            {/* Buttons */}
+            <div className="flex flex-col md:flex-row gap-4">
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-gradient-to-r from-black to-blue-900 text-white py-3 rounded-lg font-semibold hover:from-blue-800 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Creating Product...' : 'Create Product'}
               </button>
               <button
                 type="button"
                 onClick={() => router.push('/items')}
-                className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                className="px-6 py-3 bg-white/20 text-white rounded-lg font-semibold hover:bg-white/30 transition-colors"
               >
                 Cancel
               </button>
@@ -256,7 +232,6 @@ export default function AddItemPage() {
           </form>
         </div>
       </div>
-      <Footer />
     </main>
   );
 }
