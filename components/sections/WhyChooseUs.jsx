@@ -38,7 +38,7 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-black to-blue-900 text-white">
+    <section className="py-20 bg-gradient-to-bl from-black to-blue-900 text-white">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Header */}

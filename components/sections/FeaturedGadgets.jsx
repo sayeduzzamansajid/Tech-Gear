@@ -2,13 +2,11 @@ import Link from "next/link";
 
 export default function FeaturedGadgets() {
   return (
-    <section className="py-20 bg-gradient-to-br from-black to-blue-900">
+    <section className="py-20 bg-gradient-to-bl from-black to-blue-900">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-14 max-w-3xl mx-auto">
-          <span className="inline-block mb-3 px-4 py-1 text-sm font-medium bg-blue-100 text-blue-600 rounded-full">
-            Featured Categories
-          </span>
+         
           <h2 className="text-4xl text-white font-bold mb-4">
             Featured Gadgets
           </h2>

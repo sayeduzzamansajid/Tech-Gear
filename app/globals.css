@@ -25,3 +25,20 @@ body {
     text-wrap: balance;
   }
 }
+
+
+/* styles/globals.css */
+
+.nav-link {
+  color: gray;
+  text-decoration: none;
+  padding: 8px 10px;
+  transition: color 0.2s, border-bottom 0.2s;
+}
+
+.nav-link.active {
+  color: whitesmoke;
+  font-weight: bold;
+  border-bottom: 2px solid blue;
+}
+

@@ -1,9 +1,9 @@
 'use client';
-
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { isAuthenticated, logout } from '@/lib/auth-client';
+import ActiveLink from './ActiveLink';
+import Link from 'next/link';
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -34,32 +34,38 @@ export default function Navbar() {
                     </div>
 
                     <div className="hidden md:flex items-center space-x-8">
-                        <Link href="/items" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Products </Link>
-                        <Link
+                        <ActiveLink href="/" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Home
+                        </ActiveLink>
+                        <ActiveLink href="/items" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Products
+                        </ActiveLink>
+                        <ActiveLink
                             href="/about"
                             className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
                                 } transition-colors`}
                         >
                             About us
-                        </Link>
-                        <Link href="/contact" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Contact </Link>
-                        <Link href="/blog" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Blog </Link>
+                        </ActiveLink>
+                        <ActiveLink href="/contact" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Contact
+                        </ActiveLink>
+                        <ActiveLink href="/blog" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Blog
+                        </ActiveLink>
 
 
 
-                        <Link href="/faq" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> FAQ </Link>
+                        <ActiveLink href="/faq" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> FAQ
+                        </ActiveLink>
 
 
                     </div>
                     <div><div>
                         {authenticated && (
-                            <Link
+                            <ActiveLink
                                 href="/add-item"
                                 className={` text-white${pathname === '/add-item' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
                                     } transition-colors`}
                             >
                                 Add Item
-                            </Link>
+                            </ActiveLink>
                         )}
                         {authenticated ? (
                             <button
@@ -69,13 +75,13 @@ export default function Navbar() {
                                 Logout
                             </button>
                         ) : (
-                            <Link
+                            <ActiveLink
                                 href="/login"
                                 className={`text-white${pathname === '/login' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
                                     } transition-colors`}
                             >
                                 Login
-                            </Link>
+                            </ActiveLink>
                         )}
                     </div></div>
 
