@@ -34,13 +34,7 @@ export default function Navbar() {
                     </div>
 
                     <div className="hidden md:flex items-center space-x-8">
-                        <Link
-                            href="/items"
-                            className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
-                                } transition-colors`}
-                        >
-                            Products
-                        </Link>
+                        <Link href="/items" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Products </Link>
                         <Link
                             href="/about"
                             className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
@@ -48,36 +42,42 @@ export default function Navbar() {
                         >
                             About us
                         </Link>
+                        <Link href="/contact" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Contact </Link>
+                        <Link href="/blog" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> Blog </Link>
 
-                        
+
+
+                        <Link href="/faq" className={`text-white${pathname === '/items' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'} transition-colors`}> FAQ </Link>
+
+
                     </div>
                     <div><div>
-                            {authenticated && (
-                                <Link
-                                    href="/add-item"
-                                    className={` text-white${pathname === '/add-item' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
-                                        } transition-colors`}
-                                >
-                                    Add Item
-                                </Link>
-                            )}
-                            {authenticated ? (
-                                <button
-                                    onClick={handleLogout}
-                                    className="text-white hover:text-blue-600 transition-colors"
-                                >
-                                    Logout
-                                </button>
-                            ) : (
-                                <Link
-                                    href="/login"
-                                    className={`text-white${pathname === '/login' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
-                                        } transition-colors`}
-                                >
-                                    Login
-                                </Link>
-                            )}
-                        </div></div>
+                        {authenticated && (
+                            <Link
+                                href="/add-item"
+                                className={` text-white${pathname === '/add-item' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
+                                    } transition-colors`}
+                            >
+                                Add Item
+                            </Link>
+                        )}
+                        {authenticated ? (
+                            <button
+                                onClick={handleLogout}
+                                className="text-white hover:text-blue-600 transition-colors"
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <Link
+                                href="/login"
+                                className={`text-white${pathname === '/login' ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'
+                                    } transition-colors`}
+                            >
+                                Login
+                            </Link>
+                        )}
+                    </div></div>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden">

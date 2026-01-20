@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { isAuthenticated, logout } from '@/lib/auth-client';
 
 export default function LoginPage() {
@@ -62,9 +60,8 @@ export default function LoginPage() {
   if (isAuth) {
     return (
       <main className="min-h-screen">
-        <Navbar />
-        <div className="max-w-md mx-auto mt-20 p-8">
-          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="max-w-md mx-auto p-8">
+          <div className="bg-white rounded-lg shadow-md p-6 text-center ">
             <p className="text-gray-600 mb-4">You are already logged in.</p>
             <button
               onClick={handleLogout}
@@ -74,16 +71,14 @@ export default function LoginPage() {
             </button>
           </div>
         </div>
-        <Footer />
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <Navbar />
-      <div className="max-w-md mx-auto mt-20 p-8">
-        <div className="bg-white rounded-lg shadow-md p-8">
+    <main className="min-h-screen bg-gray-50 ">
+      <div className="max-w-md mx-auto  p-8">
+        <div className="bg-white rounded-lg shadow-md p-8 ">
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-900">Login</h1>
           
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -139,7 +134,6 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </main>
   );
 }

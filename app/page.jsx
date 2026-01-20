@@ -1,5 +1,3 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import HeroSection from "@/components/sections/HeroSection";
 import FeaturedGadgets from "@/components/sections/FeaturedGadgets";
 import Categories from "@/components/sections/Categories";
