@@ -52,7 +52,7 @@ export default function CustomerReviews() {
                 ))}
               </div>
               {/* Comment */}
-              <p className="text-gray-300 mb-4 italic">"{review.comment}"</p>
+              <p className="text-gray-300 mb-4 italic">&quot;{review.comment}&quot;</p>
               {/* Name & Role */}
               <div>
                 <p className="font-semibold text-white">{review.name}</p>

@@ -18,16 +18,20 @@ export default function AddItemPage() {
   const [success, setSuccess] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const router = useRouter();
-
   useEffect(() => {
-    checkAuth();
-  }, []);
+    // 1. Define the function INSIDE the effect
+    const checkAuth = async () => {
+      const auth = await isAuthenticated();
+      if (!auth) {
+        router.push('/login');
+      } else {
+        setAuthChecked(true);
+      }
+    };
 
-  const checkAuth = async () => {
-    const auth = await isAuthenticated();
-    if (!auth) router.push('/login');
-    else setAuthChecked(true);
-  };
+    // 2. Call it immediately
+    checkAuth();
+  }, []); // 3. The dependency array remains empty (safe now)
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
