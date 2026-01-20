@@ -73,7 +73,7 @@ export default function HeroSection() {
                 </div>
               ))}
 
-              <button className="w-full mt-4 text-white bg-gradient-to-r from-black to-blue-900 hover:bg-yellow-300 text-black font-semibold py-3 rounded-lg transition">
+              <button className="w-full mt-4 text-white bg-gradient-to-r from-black to-blue-900 hover:bg-yellow-300 font-semibold py-3 rounded-lg transition">
                 🔍 Search Products
               </button>
 
